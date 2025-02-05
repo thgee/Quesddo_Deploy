@@ -12,3 +12,4 @@ pnpm tsc --noEmit
 # 3️⃣ 테스트 실행
 pnpm run test --passWithNoTests
 
+pnpm commitlint --edit $1
