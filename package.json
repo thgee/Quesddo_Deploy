@@ -45,6 +45,7 @@
     "husky": "^9.1.7",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
+    "lint-staged": "^15.4.3",
     "postcss": "^8",
     "prettier": "3.4.2",
     "storybook": "8.5.3",
@@ -55,6 +56,15 @@
   "eslintConfig": {
     "extends": [
       "plugin:storybook/recommended"
+    ]
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --cache --fix",
+      "prettier --cache --write"
+    ],
+    "*.{md,json}": [
+      "prettier --cache --write"
     ]
   }
 }
