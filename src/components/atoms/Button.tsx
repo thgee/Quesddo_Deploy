@@ -10,7 +10,7 @@ const buttonVariants = cva(
         default:
           "bg-blue-500 text-white hover:bg-blue-600 focus:bg-blue-800 disabled:bg-slate-400",
         outline:
-          "bg-white text-blue-500 hover:text-blue-600 focus:text-blue-800 disabled:bg-slate-400 border border-[curretColor]",
+          "bg-white text-blue-500 hover:text-blue-600 focus:text-blue-800 disabled:text-slate-400 border border-[curretColor]",
       },
       size: {
         default: "w-full h-[48px] text-base",
@@ -33,12 +33,12 @@ const buttonVariants = cva(
 type ButtonElementProps = React.ButtonHTMLAttributes<HTMLButtonElement> &
   VariantProps<typeof buttonVariants>;
 
-export type ButtonProps = ButtonElementProps;
+type ButtonProps = ButtonElementProps;
 
 export default function Button({
+  variant = "default",
+  size = "default",
   className,
-  variant,
-  size,
   ...props
 }: ButtonProps) {
   return (
