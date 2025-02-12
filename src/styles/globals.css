@@ -64,6 +64,8 @@
   --breakpoint-md: 744px;
 }
 
-* {
-  box-sizing: content-box;
+@layer base {
+  * {
+    box-sizing: content-box;
+  }
 }
