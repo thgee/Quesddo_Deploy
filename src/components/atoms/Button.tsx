@@ -36,7 +36,6 @@ type ButtonElementProps = React.ButtonHTMLAttributes<HTMLButtonElement> &
 export type ButtonProps = ButtonElementProps;
 
 export default function Button({
-  className,
   variant = "default",
   size = "default",
   ...props
