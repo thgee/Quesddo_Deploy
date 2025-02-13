@@ -37,7 +37,7 @@ export default function Sidebar({ title }: { title: string }) {
       <aside
         className={cn(
           // mobile 스타일
-          "z-20 flex h-screen w-full flex-[0_0_100%] flex-col overflow-hidden border-slate-200 bg-white pt-3 pb-8 transition-[flex] ease-[cubic-bezier(0,0.36,0,0.84)]",
+          "z-20 box-border flex h-screen w-full flex-[0_0_100%] flex-col overflow-hidden border-slate-200 bg-white pt-3 pb-8 transition-[flex] ease-[cubic-bezier(0,0.36,0,0.84)]",
           // tablet + pc 스타일
           "sm:w-[280px] sm:flex-[0_0_280px] sm:border-r sm:pb-9",
           // tablet:fixed 관련
@@ -64,6 +64,7 @@ export default function Sidebar({ title }: { title: string }) {
           "hidden sm:block md:hidden",
           "after:fixed after:inset-0 after:z-10 after:bg-black/50",
           "after:hidden sm:after:block md:after:hidden",
+          !isOpen && "sm:after:hidden",
         )}
       ></div>
     </>
