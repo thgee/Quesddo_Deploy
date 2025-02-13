@@ -1,7 +1,4 @@
 import Image from "next/image";
-import iconFold from "@public/icons/fold.png";
-import logo from "@public/icons/logo.png";
-import logoHorizontal from "@public/icons/logo_horizontal.png";
 import Link from "next/link";
 
 import { cn } from "@/utils/cn";
@@ -23,28 +20,28 @@ export default function SidebarHeader({
       )}
     >
       <Link href="/">
-        <Image
-          src={logoHorizontal}
-          alt="로고"
+        <img
+          src="/icons/logo_horizontal.png"
+          alt="로고_horizontal"
           width={106}
           height={35}
           className={cn(!isOpen && "hidden")}
         />
-        <Image
-          src={logo}
+        <img
+          src="/icons/logo.png"
           alt="로고"
           width={32}
           height={32}
           className={cn("hidden", !isOpen && "block h-[32px] w-[32px]")}
         />
       </Link>
-      <button onClick={onToggleSidebar} className="hidden sm:block">
-        <Image
-          src={iconFold}
+      <button onClick={onToggleSidebar}>
+        <img
+          src="/icons/fold.png"
           width={24}
           height={24}
           alt={isOpen ? "사이드바 닫기" : "사이드바 열기"}
-          className={cn("cursor-pointer", !isOpen && "sm:scale-[-1]")}
+          className={cn("cursor-pointer", !isOpen && "scale-[-1]")}
         />
       </button>
     </div>
