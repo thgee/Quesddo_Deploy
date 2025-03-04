@@ -1,20 +1,17 @@
 import { ForwardedRef, forwardRef, memo, useRef } from "react";
 
-import useInfiniteGoals from "@/hooks/goal/useIniniteGoals";
+import useInfiniteGoals from "@/hooks/goal/useInfiniteGoals";
 import { cn } from "@/utils/cn";
+
 import TabSideMenuItem from "./TabSideMenuItem";
 
 export default memo(
   forwardRef(function TabSideMenuList(_, ref: ForwardedRef<HTMLUListElement>) {
     const containerRef = useRef<HTMLDivElement>(null);
     const {
-      query: { data, isError, error, hasNextPage },
+      query: { data, hasNextPage },
       inViewRef,
     } = useInfiniteGoals(containerRef, ref);
-
-    if (isError) {
-      return <p>에러 발생: {(error as Error).message}</p>;
-    }
 
     return (
       <div
