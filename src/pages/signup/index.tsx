@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import Form from "@/views/sign/Form";
+import SignForm from "@/views/sign/SignForm";
 import logo from "@public/img_logo.png";
 
 export default function SignUpPage() {
@@ -14,13 +14,13 @@ export default function SignUpPage() {
         width={270}
         height={89}
       />
-      <Form>
-        <Form.InnerForm />
-      </Form>
+      <SignForm>
+        <SignForm.InnerForm />
+      </SignForm>
       <p className="mt-10 text-center font-normal">
         이미 회원이신가요?
         <Link
-          className="text-blue-600 underline hover:text-blue-800"
+          className="ml-1 inline-block text-blue-600 underline hover:text-blue-800"
           href={"/login"}
         >
           로그인
