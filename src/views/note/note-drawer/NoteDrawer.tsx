@@ -1,10 +1,11 @@
 import { usePathname, useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { Suspense, useMemo } from "react";
+import { ErrorBoundary } from "react-error-boundary";
 
 import ExitBtn from "@/components/atoms/exit-btn/ExitBtn";
-import Toaster from "@/components/organisms/toaster/Toaster";
-import ToastProvider from "@/components/organisms/toaster/ToastProvider";
+import Spinner from "@/components/atoms/spinner/Spinner";
+import ErrorFallback from "@/components/molecules/error-fallback/ErrorFallback";
 import { InputModalProvider } from "@/contexts/InputModalContext";
 
 import NoteCreationForm from "../note-form/NoteCreationForm";
@@ -23,9 +24,15 @@ export default function NoteDrawer() {
   const todoId = +(searchParams.get("todoId") ?? NaN);
   const noteId = +(searchParams.get("noteId") ?? NaN);
   const isEditMode = searchParams.get("mode") === MODE.EDIT;
-  const [mode, setMode] = useState<(typeof MODE)[keyof typeof MODE] | null>(
-    null,
-  );
+  const mode = useMemo<(typeof MODE)[keyof typeof MODE] | null>(() => {
+    if (todoId >= 0) {
+      return MODE.CREATE;
+    } else if (noteId >= 0) {
+      return isEditMode ? MODE.EDIT : null;
+    } else {
+      return null;
+    }
+  }, [isEditMode, noteId, todoId]);
 
   const handleClick = () => {
     if (mode !== MODE.EDIT) {
@@ -37,16 +44,6 @@ export default function NoteDrawer() {
     }
   };
 
-  useEffect(() => {
-    if (todoId >= 0) {
-      setMode(MODE.CREATE);
-    } else if (noteId >= 0) {
-      setMode(isEditMode ? MODE.EDIT : null);
-    } else {
-      setMode(null);
-    }
-  }, [isEditMode, noteId, todoId]);
-
   if (!mode) {
     return null;
   }
@@ -56,11 +53,12 @@ export default function NoteDrawer() {
       <section className="fixed inset-0 flex flex-col gap-4 bg-white p-6 sm:left-auto sm:w-[512px] sm:border-l sm:border-slate-200 md:w-[800px]">
         <ExitBtn onClick={handleClick} />
         <InputModalProvider>
-          <ToastProvider>
-            {mode === MODE.CREATE && <NoteCreationForm todoId={todoId} />}
-            {mode === MODE.EDIT && <NoteUpdateForm noteId={noteId} />}
-            <Toaster />
-          </ToastProvider>
+          <ErrorBoundary FallbackComponent={ErrorFallback}>
+            <Suspense fallback={<Spinner size={80} />}>
+              {mode === MODE.CREATE && <NoteCreationForm todoId={todoId} />}
+              {mode === MODE.EDIT && <NoteUpdateForm noteId={noteId} />}
+            </Suspense>
+          </ErrorBoundary>
         </InputModalProvider>
       </section>
     </div>
