@@ -42,10 +42,14 @@ export default function NoteForm<
       isEditMode: editMode,
     });
 
+  const {
+    formState: { isValid },
+  } = methods;
+
   return (
     <FormProvider {...methods}>
       <form
-        className="flex flex-1 flex-col"
+        className="flex min-h-0 flex-1 flex-col"
         onSubmit={methods.handleSubmit(onSubmit)}
       >
         <div className="flex items-center justify-between">
@@ -59,7 +63,12 @@ export default function NoteForm<
             >
               임시저장
             </Button>
-            <Button size="xs" className="sm:h-[44px]" type="submit">
+            <Button
+              size="xs"
+              className="sm:h-[44px]"
+              type="submit"
+              disabled={!isValid}
+            >
               작성완료
             </Button>
           </div>
@@ -72,12 +81,14 @@ export default function NoteForm<
           />
         </div>
         <InputWithCount />
-        <div className="flex flex-1 flex-col gap-2">
+        <div className="flex min-h-0 flex-1 flex-col gap-2">
           <EditorTextCounter />
           <LinkDisplay />
           <Editor />
         </div>
-        <LinkModal />
+        <div className="-mt-4">
+          <LinkModal />
+        </div>
         {children}
       </form>
     </FormProvider>
