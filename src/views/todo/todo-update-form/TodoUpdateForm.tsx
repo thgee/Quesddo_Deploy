@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
-import instance from "@/apis/apiClient";
+import { todoApi } from "@/apis/todoApi";
 import { useModalContext } from "@/contexts/InputModalContext";
 import { useTodoForm } from "@/hooks/todo/form/useTodoForm";
 import { useUpdateTodo } from "@/hooks/todo/useUpdateTodo";
@@ -17,10 +17,7 @@ export default function TodoUpdateForm({ todoId }: { todoId: number }) {
 
   const { data: todo } = useQuery({
     queryKey: ["todo", todoId],
-    queryFn: async () => {
-      const response = await instance.get(`/todos/${todoId}`);
-      return response.data;
-    },
+    queryFn: () => todoApi.fetchTodo(todoId),
     enabled: !!todoId,
   });
 
@@ -29,38 +26,24 @@ export default function TodoUpdateForm({ todoId }: { todoId: number }) {
   const { setIsDone, setIsFileCheck, setIsLinkCheck, setSelectedInput } =
     todoformProps;
 
+  const isInitialized = useRef(false);
+
   useEffect(() => {
-    if (todo) {
+    if (todo && !isInitialized.current) {
       reset(todo);
       setIsDone(todo.done || false);
 
-      if (todo.fileUrl) {
-        setIsFileCheck(true);
-        setValue("fileUrl", todo.fileUrl);
-      } else {
-        setIsFileCheck(false);
-      }
+      if (todo.fileUrl) setValue("fileUrl", todo.fileUrl);
+      setIsFileCheck(!!todo.fileUrl);
 
-      if (todo.linkUrl) {
-        setIsLinkCheck(true);
-        setSelectedInput("link");
-      } else {
-        setIsLinkCheck(false);
-      }
+      if (todo.linkUrl) setSelectedInput("link");
+      setIsLinkCheck(!!todo.linkUrl);
 
-      if (todo.goal?.id) {
-        setValue("goalId", todo.goal.id);
-      }
+      if (todo.goal?.id) setValue("goalId", todo.goal.id);
+
+      isInitialized.current = true;
     }
-  }, [
-    todo,
-    reset,
-    setValue,
-    setIsDone,
-    setIsFileCheck,
-    setIsLinkCheck,
-    setSelectedInput,
-  ]);
+  }, [todo]);
 
   const updateTodoSubmit = (data: UpdateTodoBodyDto) => {
     updateTodoMutation.mutate(
